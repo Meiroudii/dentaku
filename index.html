@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dentaku 電卓 | Home</title>
+	<style>
+	  :root {
+		margin: 0;
+		padding:0;
+		box-sizing: border-box;
+	  }
+	</style>
+</head>
+<body>
+	<main>
+	  <section>
+		<div>
+		  <input type="number" id="display">
+		  <button id="">1</button>
+		  <button id="">2</button>
+		  <button id="">3</button>
+		  <button id="">4</button>
+		  <button id="">5</button>
+		  <button id="">6</button>
+		  <button id="">7</button>
+		  <button id="">8</button>
+		  <button id="">9</button>
+		  <button id="">0</button>
+		  <button id="">+</button>
+		  <button id="">-</button>
+		  <button id="">*</button>
+		  <button id="">/</button>
+		  <button id="">=</button>
+		</div>
+	  </section>
+	</main>
+	<script>
+	/**
+	Thought flow: Should I put the user input into and array? appointing each object on their own operations?
+	Putting numbers in variable and another variables for operations?
+	Add eventlistener to each buttons that will be designated to their value?
+	Add listener similar to key code combo? (keyboard support)
+	**/
+	const pressed = [];
+	const display = document.getElementById('display');
+
+	display.addEventListener("keyup", (e) => {
+	  console.log(e.key);
+	  pressed.push(e.key);
+	})
+
+	function add() {}
+	function subtract() {}
+	function multiply() {}
+	function divide() {}
+	function operate() {}
+	</script>
+</body>
+</html>
