@@ -41,9 +41,28 @@
 	Putting numbers in variable and another variables for operations?
 	Add eventlistener to each buttons that will be designated to their value?
 	Add listener similar to key code combo? (keyboard support)
+
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 	**/
 	const pressed = [];
 	const display = document.getElementById('display');
+	const buttons = 
 
 	display.addEventListener("keyup", (e) => {
 	  console.log(e.key);
@@ -54,7 +73,75 @@
 	function subtract() {}
 	function multiply() {}
 	function divide() {}
-	function operate() {}
+
+
+	function operate(expression) {
+	  // Remove all whitespace
+	  expression = expression.replace(/\s+/g, '');
+	  // Helper: evaluate simple tokens
+	  function parseExpression(expr, index = 0) {
+		let values = [];
+		let ops = [];
+		let num = '';
+
+		while (index < expr.length) {
+		  let char = expr[index];
+
+		  if ('0' <= char && char <= '9') {
+			num += char;
+		  } else if (char === '(') {
+			if (num) {
+			  values.push(parseFloat(num));
+			  num = '';
+			}
+			let { result, newIndex } = parseExpression(expr, index + 1);
+			values.push(result);
+			index = newIndex;
+		  } else if (char === ')') {
+			if (num) values.push(parseFloat(num));
+			return { result: evaluateStack(values, ops), newIndex: index };
+		  } else {
+			if (num) {
+			  values.push(parseFloat(num));
+			  num = '';
+			}
+			while (ops.length && precedence(ops[ops.length - 1]) >= precedence(char)) {
+			  applyOp(values, ops);
+			}
+			ops.push(char);
+		  }
+		  index++;
+		}
+		if (num) values.push(parseFloat(num));
+
+		while (ops.length) applyOp(values, ops);
+
+		return { result: values[0] };
+	  }
+	  function precedence(op) {
+		if (op === '+' || op === '-') return 1;
+		if (op === '*' || op === '/') return 2;
+		return 0;
+	  }
+	  function applyOp(values, ops) {
+		const op = ops.pop();
+		const right = values.pop();
+		const left = values.pop();
+		switch (op) {
+		  case '+': values.push(left + right); break;
+		  case '-': values.push(left - right); break;
+		  case '*': values.push(left * right); break;
+		  case '/': values.push(left / right); break;
+		}
+	  }
+	  function evaluateStack(values, ops) {
+		while (ops.length) applyOp(values, ops);
+		return values[0];
+	  }
+	  return parseExpression(expression).result;
+	}
+
+
 	</script>
 </body>
 </html>
