@@ -10,32 +10,138 @@
 		padding:0;
 		box-sizing: border-box;
 	  }
+	.power-off-overlay {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100vh;
+	  background-color: rgba(0, 0, 0, 0.9);
+	  z-index: 9999;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+
 	</style>
 </head>
 <body>
 	<main>
 	  <section>
+				<button onclick="toggle_power()">⏻</button>
 		<div>
 		  <input type="number" id="display">
-		  <button aria-keyshortcuts="1" data-key="49" id="">1</button>
-		  <button aria-keyshortcuts="2" data-key="50" id="">2</button>
-		  <button aria-keyshortcuts="2" data-key="51" id="">3</button>
-		  <button aria-keyshortcuts="2" data-key="52" id="">4</button>
-		  <button aria-keyshortcuts="2" data-key="53" id="">5</button>
-		  <button aria-keyshortcuts="2" data-key="54" id="">6</button>
-		  <button aria-keyshortcuts="2" data-key="55" id="">7</button>
-		  <button aria-keyshortcuts="2" data-key="56" id="">8</button>
-		  <button aria-keyshortcuts="2" data-key="57" id="">9</button>
-		  <button aria-keyshortcuts="2" data-key="48" id="">0</button>
-		  <button aria-keyshortcuts="2" data-key="187" id="">+</button>
-		  <button aria-keyshortcuts="2" data-key="189" id="">-</button>
-		  <button aria-keyshortcuts="2" data-key="56" id="">*</button>
-		  <button aria-keyshortcuts="2" data-key="191" id="">/</button>
-		  <button aria-keyshortcuts="2" data-key="187" id="">=</button>
+		  <button aria-keyshortcuts="Backspace" data-key="49" id="" class="calc-button">DELETE</button>
+		  <button aria-keyshortcuts="." data-key="49" id="" class="calc-button">.</button>
+		  <button aria-keyshortcuts="" data-key="49" id="" class="calc-button">CLEAR</button>
+		  <button aria-keyshortcuts="1" data-key="49" id="" class="calc-button">1</button>
+		  <button aria-keyshortcuts="2" data-key="50" id="" class="calc-button" >2</button>
+		  <button aria-keyshortcuts="3" data-key="51" id="" class="calc-button" >3</button>
+		  <button aria-keyshortcuts="4" data-key="52" id="" class="calc-button" >4</button>
+		  <button aria-keyshortcuts="5" data-key="53" id="" class="calc-button" >5</button>
+		  <button aria-keyshortcuts="o" data-key="54" id="" class="calc-button" >6</button>
+		  <button aria-keyshortcuts="7" data-key="55" id="" class="calc-button" >7</button>
+		  <button aria-keyshortcuts="8" data-key="56" id="" class="calc-button" >8</button>
+		  <button aria-keyshortcuts="9" data-key="57" id="" class="calc-button" >9</button>
+		  <button aria-keyshortcuts="0" data-key="48" id="" class="calc-button" >0</button>
+		  <button aria-keyshortcuts="+" data-key="187" id="" class="calc-button" >+</button>
+		  <button aria-keyshortcuts="-" data-key="189" id="" class="calc-button" >-</button>
+		  <button aria-keyshortcuts="*" data-key="56" id="" class="calc-button" >*</button>
+		  <button aria-keyshortcuts="/" data-key="191" id="" class="calc-button" >/</button>
+		  <button aria-keyshortcuts="=" data-key="187" id="" class="calc-button" >=</button>
 		</div>
 	  </section>
 	</main>
 	<script>
+		// javascript
+		const main = document.querySelector("main");
+		const power_off = document.createElement("div");
+
+		function toggle_power() {
+				document.body.append(main, power_off);
+				power_off.classList.add("power-off-overlay");
+				alert("Ctrl+R to power on again.");
+		}
+	const numbers = [];
+	const expression = [];
+	const display = document.getElementById('display');
+	const buttons = Array.from(document.querySelectorAll(".calc-button"));
+	let num = 0;
+
+	function all_clear () {
+			expression.length = 0; 
+		}
+
+	window.addEventListener("keyup", (e) => {
+			/** 
+			If the index 0 is a number and the index 1 must be an operator and the index 2 must be a number.
+			Then the result will be place at index 0 again? for further computation?
+			**/
+		const binding = e.key;
+			if (Number.isFinite(parseInt(e.key))) {
+				console.log("That's a number bro!");
+				numbers.push(parseInt(e.key));
+				num = +numbers.join("");
+				if (expression.length == 2) {
+					expression.push(num); 
+					console.log(`At number if ${expression}`);
+				}
+			}
+
+			if ((e.key == "+" || e.key == "/" || e.key == "*" || binding == "x" || binding == "-")) {
+				if (num != 0) { 
+					expression.push(num); 
+					expression.push(e.key);
+					console.log(expression);
+					numbers.length = 0
+				}
+			}
+			if (expression.length == 3) {
+				let result = 0;
+				let x = parseInt(expression[0]);
+				let operator = expression[1];
+				let y = parseInt(expression[2]);
+
+				switch (operator) {
+				  case '+':
+						alert(x + y);
+						break;
+				  case '-':
+						alert(x - y); 
+						result = (x-y);
+						expression.length = 0;
+						expression.push(result);
+						break;
+				  case 'x': alert(x * y); 
+						break;
+				  case '*': alert(x * y); 
+						break;
+				  case '/':
+						alert(x / y); 
+						result = Math.round(x/y);
+						expression.length = 0;
+						expression.push(result);
+						break;
+				}
+
+			}
+	  console.log(e.key);
+	})
+
+	function add() {}
+	function subtract() {}
+	function multiply() {}
+	function divide() {}
+
+	function operate(expression) {
+		expression = expression.replace(/\s+/g, '');
+		  if ('0' <= char && char <= '9') {
+			num += char;
+		  } 
+
+	}
+
+
 	/**
 	Thought flow: Should I put the user input into and array? appointing each object on their own operations?
 	Putting numbers in variable and another variables for operations?
@@ -60,88 +166,6 @@
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
   window.addEventListener('keydown', playSound);
 	**/
-	const pressed = [];
-	const display = document.getElementById('display');
-	const buttons = 
-
-	display.addEventListener("keyup", (e) => {
-	  console.log(e.key);
-	  pressed.push(e.key);
-	})
-
-	function add() {}
-	function subtract() {}
-	function multiply() {}
-	function divide() {}
-
-
-	function operate(expression) {
-	  // Remove all whitespace
-	  expression = expression.replace(/\s+/g, '');
-	  // Helper: evaluate simple tokens
-	  function parseExpression(expr, index = 0) {
-		let values = [];
-		let ops = [];
-		let num = '';
-
-		while (index < expr.length) {
-		  let char = expr[index];
-
-		  if ('0' <= char && char <= '9') {
-			num += char;
-		  } else if (char === '(') {
-			if (num) {
-			  values.push(parseFloat(num));
-			  num = '';
-			}
-			let { result, newIndex } = parseExpression(expr, index + 1);
-			values.push(result);
-			index = newIndex;
-		  } else if (char === ')') {
-			if (num) values.push(parseFloat(num));
-			return { result: evaluateStack(values, ops), newIndex: index };
-		  } else {
-			if (num) {
-			  values.push(parseFloat(num));
-			  num = '';
-			}
-			while (ops.length && precedence(ops[ops.length - 1]) >= precedence(char)) {
-			  applyOp(values, ops);
-			}
-			ops.push(char);
-		  }
-		  index++;
-		}
-		if (num) values.push(parseFloat(num));
-
-		while (ops.length) applyOp(values, ops);
-
-		return { result: values[0] };
-	  }
-	  function precedence(op) {
-		if (op === '+' || op === '-') return 1;
-		if (op === '*' || op === '/') return 2;
-		return 0;
-	  }
-	  function applyOp(values, ops) {
-		const op = ops.pop();
-		const right = values.pop();
-		const left = values.pop();
-		switch (op) {
-		  case '+': values.push(left + right); break;
-		  case '-': values.push(left - right); break;
-		  case '*': values.push(left * right); break;
-		  case '/': values.push(left / right); break;
-		}
-	  }
-	  function evaluateStack(values, ops) {
-		while (ops.length) applyOp(values, ops);
-		return values[0];
-	  }
-	  return parseExpression(expression).result;
-	}
-
-
 	</script>
 </body>
 </html>
