@@ -10,6 +10,20 @@
 		padding:0;
 		box-sizing: border-box;
 	  }
+	  body {
+		  height: 100vh;
+		  width: 100%;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+	  }
+	  .calculator-frame {
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  height: 400px;
+		  width: 200px;
+	  }
 	.power-off-overlay {
 	  position: fixed;
 	  top: 0;
@@ -23,149 +37,43 @@
 	  align-items: center;
 	}
 
+	  .interface-buttons {
+		  flex: 3;
+	  }
+
+
 	</style>
 </head>
 <body>
-	<main>
-	  <section>
+	<main class="calculator-frame">
+	  <section class="">
 				<button onclick="toggle_power()">⏻</button>
 		<div>
-		  <input type="number" id="display">
-		  <button aria-keyshortcuts="Backspace" data-key="49" id="" class="calc-button">DELETE</button>
-		  <button aria-keyshortcuts="." data-key="49" id="" class="calc-button">.</button>
-		  <button aria-keyshortcuts="" data-key="49" id="" class="calc-button">CLEAR</button>
-		  <button aria-keyshortcuts="1" data-key="49" id="" class="calc-button">1</button>
-		  <button aria-keyshortcuts="2" data-key="50" id="" class="calc-button" >2</button>
-		  <button aria-keyshortcuts="3" data-key="51" id="" class="calc-button" >3</button>
-		  <button aria-keyshortcuts="4" data-key="52" id="" class="calc-button" >4</button>
-		  <button aria-keyshortcuts="5" data-key="53" id="" class="calc-button" >5</button>
-		  <button aria-keyshortcuts="o" data-key="54" id="" class="calc-button" >6</button>
-		  <button aria-keyshortcuts="7" data-key="55" id="" class="calc-button" >7</button>
-		  <button aria-keyshortcuts="8" data-key="56" id="" class="calc-button" >8</button>
-		  <button aria-keyshortcuts="9" data-key="57" id="" class="calc-button" >9</button>
-		  <button aria-keyshortcuts="0" data-key="48" id="" class="calc-button" >0</button>
-		  <button aria-keyshortcuts="+" data-key="187" id="" class="calc-button" >+</button>
-		  <button aria-keyshortcuts="-" data-key="189" id="" class="calc-button" >-</button>
-		  <button aria-keyshortcuts="*" data-key="56" id="" class="calc-button" >*</button>
-		  <button aria-keyshortcuts="/" data-key="191" id="" class="calc-button" >/</button>
-		  <button aria-keyshortcuts="=" data-key="187" id="" class="calc-button" >=</button>
+		  <input type="text" id="display">
+		<div class="interface-buttons">
+			  <button aria-keyshortcuts="Backspace" data-key="49" id="" class="calc-button">DELETE</button>
+			  <button aria-keyshortcuts="." data-key="49" id="" class="calc-button">.</button>
+			  <button aria-keyshortcuts="" data-key="49" id="" class="calc-button">CLEAR</button>
+			  <button aria-keyshortcuts="1" data-key="50" id="" class="calc-button" >1</button>
+			  <button aria-keyshortcuts="2" data-key="50" id="" class="calc-button" >2</button>
+			  <button aria-keyshortcuts="3" data-key="51" id="" class="calc-button" >3</button>
+			  <button aria-keyshortcuts="4" data-key="52" id="" class="calc-button" >4</button>
+			  <button aria-keyshortcuts="5" data-key="53" id="" class="calc-button" >5</button>
+			  <button aria-keyshortcuts="o" data-key="54" id="" class="calc-button" >6</button>
+			  <button aria-keyshortcuts="7" data-key="55" id="" class="calc-button" >7</button>
+			  <button aria-keyshortcuts="8" data-key="56" id="" class="calc-button" >8</button>
+			  <button aria-keyshortcuts="9" data-key="57" id="" class="calc-button" >9</button>
+			  <button aria-keyshortcuts="0" data-key="48" id="" class="calc-button" >0</button>
+			  <button aria-keyshortcuts="+" data-key="187" id="" class="calc-button" >+</button>
+			  <button aria-keyshortcuts="-" data-key="189" id="" class="calc-button" >-</button>
+			  <button aria-keyshortcuts="*" data-key="56" id="" class="calc-button" >*</button>
+			  <button aria-keyshortcuts="/" data-key="191" id="" class="calc-button" >/</button>
+			  <button aria-keyshortcuts="=" data-key="187" id="" class="calc-button" >=</button>
+		</div>
 		</div>
 	  </section>
 	</main>
-	<script>
-		// javascript
-		const main = document.querySelector("main");
-		const power_off = document.createElement("div");
-
-		function toggle_power() {
-				document.body.append(main, power_off);
-				power_off.classList.add("power-off-overlay");
-				alert("Ctrl+R to power on again.");
-		}
-	const numbers = [];
-	const expression = [];
-	const display = document.getElementById('display');
-	const buttons = Array.from(document.querySelectorAll(".calc-button"));
-	let num = 0;
-
-	function all_clear () {
-			expression.length = 0; 
-		}
-
-	window.addEventListener("keyup", (e) => {
-			/** 
-			If the index 0 is a number and the index 1 must be an operator and the index 2 must be a number.
-			Then the result will be place at index 0 again? for further computation?
-			**/
-		const binding = e.key;
-			if (Number.isFinite(parseInt(e.key))) {
-				console.log("That's a number bro!");
-				numbers.push(parseInt(e.key));
-				num = +numbers.join("");
-				if (expression.length == 2) {
-					expression.push(num); 
-					console.log(`At number if ${expression}`);
-				}
-			}
-
-			if ((e.key == "+" || e.key == "/" || e.key == "*" || binding == "x" || binding == "-")) {
-				if (num != 0) { 
-					expression.push(num); 
-					expression.push(e.key);
-					console.log(expression);
-					numbers.length = 0
-				}
-			}
-			if (expression.length == 3) {
-				let result = 0;
-				let x = parseInt(expression[0]);
-				let operator = expression[1];
-				let y = parseInt(expression[2]);
-
-				switch (operator) {
-				  case '+':
-						alert(x + y);
-						break;
-				  case '-':
-						alert(x - y); 
-						result = (x-y);
-						expression.length = 0;
-						expression.push(result);
-						break;
-				  case 'x': alert(x * y); 
-						break;
-				  case '*': alert(x * y); 
-						break;
-				  case '/':
-						alert(x / y); 
-						result = Math.round(x/y);
-						expression.length = 0;
-						expression.push(result);
-						break;
-				}
-
-			}
-	  console.log(e.key);
-	})
-
-	function add() {}
-	function subtract() {}
-	function multiply() {}
-	function divide() {}
-
-	function operate(expression) {
-		expression = expression.replace(/\s+/g, '');
-		  if ('0' <= char && char <= '9') {
-			num += char;
-		  } 
-
-	}
-
-
-	/**
-	Thought flow: Should I put the user input into and array? appointing each object on their own operations?
-	Putting numbers in variable and another variables for operations?
-	Add eventlistener to each buttons that will be designated to their value?
-	Add listener similar to key code combo? (keyboard support)
-
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">clap</span>
-    </div>
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-    if (!audio) return;
-
-    key.classList.add('playing');
-    audio.currentTime = 0;
-    audio.play();
-  }
-
-  const keys = Array.from(document.querySelectorAll('.key'));
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
-	**/
+	<script src="./script.js">
 	</script>
 </body>
 </html>
