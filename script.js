@@ -1,4 +1,4 @@
-/**
+/*
  * INput algo
  * if the length of the number array is 2 and the operator is 1 then the operation will occur
  * then the result will inserted into the index 0 of number array until the clear button is triggered
@@ -72,6 +72,7 @@ function keys_handler(e) {
 }
 
 function gui_keys_handler(expr) {
+	display.value = expression.join("");
 	let binding = expr;
 	if (Number.isFinite(parseInt(binding))) {
 		console.log("That's a number bro!");
@@ -81,7 +82,7 @@ function gui_keys_handler(expr) {
 			expression.push(num);
 			console.log(`At number if ${expression}`);
 		}
-		display.value = expression
+		display.value = expression.join("");
 	}
 	if ((binding == "+" || binding == "/" || binding == "*" || binding == "x" || binding == "-")) {
 		if (num != 0) {
@@ -90,14 +91,14 @@ function gui_keys_handler(expr) {
 			console.log(expression);
 			numbers.length = 0
 		}
-		display.value = expression
+		display.value = expression.join("");
 	}
 	if (expression.length == 3) {
 		result = 0;
 		let x = parseInt(expression[0]);
 		let operator = expression[1];
 		let y = parseInt(expression[2]);
-		display.value = expression
+		display.value = expression.join("");
 
 		operate(x, operator, y);
 	}
@@ -105,6 +106,7 @@ function gui_keys_handler(expr) {
 }
 
 function chain_calculation(result) {
+	display.value = result;
 	expression.length = 0;
 	numbers.length = 0;
 	expression.push(result);
@@ -114,6 +116,7 @@ function operate(x, operator, y) {
 	switch (operator) {
 		case '+':
 			alert(x + y);
+			result = (x + y);
 			chain_calculation(result);
 			break;
 		case '-':
@@ -123,10 +126,12 @@ function operate(x, operator, y) {
 			break;
 		case 'x':
 			alert(x * y);
+			result = (x * y);
 			chain_calculation(result);
 			break;
 		case '*':
 			alert(x * y);
+			result = (x * y);
 			chain_calculation(result);
 			break;
 		case '/':
